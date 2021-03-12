@@ -32,6 +32,7 @@
 //	2017-09-14  ver 1.20b5 Added FSK demod but not finished
 //	2017-12-25  ver 1.20 Cleaned up DSC mode, recompile with Qt 5.10
 //	2018-04-24  ver 1.21b0 Adding File transmit capability
+//	2020-10-24  ver 1.21b1 changed stereo lock threshold
 
 /////////////////////////////////////////////////////////////////////
 //==========================================================================================
@@ -81,7 +82,7 @@
 /*---------------------------------------------------------------------------*/
 /*--------------------> L O C A L   D E F I N E S <--------------------------*/
 /*---------------------------------------------------------------------------*/
-#define PROGRAM_TITLE_VERSION tr(" 1.21 beta0")
+#define PROGRAM_TITLE_VERSION tr(" 1.21 beta1")
 
 #define MAX_FFTDB 60
 #define MIN_FFTDB -170
@@ -570,6 +571,9 @@ void MainWindow::OnTimer()
 	ui->frameMeter->SetdBmLevel( m_pSdrInterface->GetSMeterAve(), false );
 	if(DEMOD_WFM == m_DemodMode)	//if in WFM mode manage stereo status display
 	{
+
+//qDebug()<<"error = "<<g_TestValue;
+
 		bool update = false;
 		if(	m_FreqChanged )
 		{

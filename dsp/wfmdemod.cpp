@@ -52,7 +52,7 @@
 #define PILOTPLL_ZETA .707	//PLL Loop damping factor
 #define PILOTPLL_FREQ 19000.0	//Centerfreq
 #define LOCK_TIMECONST .5		//Lock filter time in seconds
-#define LOCK_MAG_THRESHOLD 0.05	//Lock error magnitude threshold
+#define LOCK_MAG_THRESHOLD 0.1	//Lock error magnitude threshold
 
 #define PHASE_ADJ_M -7.267e-6	//fudge factor slope to compensate for PLL delay
 #define PHASE_ADJ_B 3.677		//fudge factor intercept to compensate for PLL delay
@@ -454,7 +454,7 @@ g_pTestBench->DisplayData(InLength, 1.0, m_RawFm, m_SampleRate,PROFILE_2);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-//	Iniitalize variables for FM Pilot PLL
+//	Initialize variables for FM Pilot PLL
 /////////////////////////////////////////////////////////////////////////////////
 void CWFmDemod::InitPilotPll( TYPEREAL SampleRate )
 {
@@ -508,6 +508,7 @@ TYPECPX tmp;
 	}
 	m_PilotNcoPhase = MFMOD(m_PilotNcoPhase, K_2PI);	//keep radian counter bounded
 //StopPerformance(InLength);
+//g_TestValue = m_PhaseErrorMagAve;
 	if(m_PhaseErrorMagAve < LOCK_MAG_THRESHOLD)
         return true;
 	else
@@ -532,7 +533,7 @@ int CWFmDemod::GetStereoLock(int* pPilotLock)
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-//	Iniitalize IIR variables for De-emphasis IIR filter.
+//	Initialize IIR variables for De-emphasis IIR filter.
 /////////////////////////////////////////////////////////////////////////////////
 void CWFmDemod::InitDeemphasis( TYPEREAL Time, TYPEREAL SampleRate)	//create De-emphasis LP filter
 {

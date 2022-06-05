@@ -91,6 +91,9 @@
    </property>
   </widget>
   <widget class="QComboBox" name="comboBoxHosts">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -98,6 +101,9 @@
      <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -110,7 +116,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Network Interface to Use</string>
+    <string>Network Interfaces Used</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

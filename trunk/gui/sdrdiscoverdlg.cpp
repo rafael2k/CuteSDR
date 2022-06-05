@@ -115,6 +115,7 @@ void CSdrDiscoverDlg::InitDlg()
 void CSdrDiscoverDlg::OnFind()
 {
 	ui->listWidget->clear();	//clear screen then delay sending to create visible clear
+	ui->pushButtonFind->setEnabled(false);
 	m_Timer.singleShot(250, this, SLOT( SendDiscoverRequest()) );
 }
 
@@ -127,6 +128,8 @@ void CSdrDiscoverDlg::CloseUdp()
 		m_UdpOpen = false;
 		qDebug("UDP Close");
 	}
+	ui->pushButtonFind->setEnabled(true);
+
 }
 
 void CSdrDiscoverDlg::SendDiscoverRequest()
@@ -139,8 +142,8 @@ void CSdrDiscoverDlg::SendDiscoverRequest()
 		bool x = m_pUdpRxSocket->bind(QHostAddress::AnyIPv4, DISCOVER_CLIENT_PORT);
 		qDebug()<<"UDP Rx bind "<<x;
 		//Tx on specified Interface IP
-		x = m_pUdpTxSocket->bind(m_ActiveHostAdr, DISCOVER_SERVER_PORT);
-		qDebug()<<"UDP Tx bind "<<x;
+//		x = m_pUdpTxSocket->bind(m_ActiveHostAdr, DISCOVER_SERVER_PORT);
+//		qDebug()<<"UDP Tx bind "<<x;
 	}
 	m_UdpOpen = true;
 	qDebug("UDP Open");
@@ -151,10 +154,17 @@ void CSdrDiscoverDlg::SendDiscoverRequest()
 	reqmsg.key[0] = KEY0;
 	reqmsg.key[1] = KEY1;
 	reqmsg.op = MSG_REQ;
-	length = m_pUdpTxSocket->writeDatagram( (const char*)&reqmsg, length, m_ActiveBroadcastAdr, DISCOVER_SERVER_PORT);
-//qDebug()<<"UDP Sent "<<length<<" On "<<m_ActiveHostAdr << m_ActiveBroadcastAdr;
-	length = m_pUdpTxSocket->writeDatagram( (const char*)&reqmsg, length, QHostAddress::Broadcast, DISCOVER_SERVER_PORT);
-	m_CloseTimer.singleShot(1000, this, SLOT( CloseUdp()) );	//wait for any responses to finish
+
+	int index;
+	for( index = 0; index < m_BroadcastAdrList.length(); index++ )
+	{
+		m_ActiveBroadcastAdr = m_BroadcastAdrList.at(index);
+		length = m_pUdpTxSocket->writeDatagram( (const char*)&reqmsg, length, m_ActiveBroadcastAdr, DISCOVER_SERVER_PORT);
+	//qDebug()<<"UDP Sent "<<length<<" On "<<m_ActiveHostAdr << m_ActiveBroadcastAdr;
+		if(0==index)
+			length = m_pUdpTxSocket->writeDatagram( (const char*)&reqmsg, length, QHostAddress::Broadcast, DISCOVER_SERVER_PORT);
+	}
+	m_CloseTimer.singleShot(2000, this, SLOT( CloseUdp()) );	//wait for any responses to finish
 }
 
 //Called when UDP messages are received on the client port for parsing

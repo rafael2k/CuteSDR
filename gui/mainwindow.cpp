@@ -82,7 +82,8 @@
 /*---------------------------------------------------------------------------*/
 /*--------------------> L O C A L   D E F I N E S <--------------------------*/
 /*---------------------------------------------------------------------------*/
-#define PROGRAM_TITLE_VERSION tr(" 1.21 beta1")
+//#define PROGRAM_TITLE_VERSION tr(" 1.21 beta1")		//2020-10-24 changed stereo lock threshold
+#define PROGRAM_TITLE_VERSION tr(" 1.21 beta2")		//2021-07-11 modified discaover method
 
 #define MAX_FFTDB 60
 #define MIN_FFTDB -170
